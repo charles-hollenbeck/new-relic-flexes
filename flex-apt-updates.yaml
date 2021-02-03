@@ -1,0 +1,17 @@
+integrations:
+  - name: nri-flex
+    interval: 24hr
+    config:
+      name: LinuxPackageUpdates
+      custom_attributes:
+        operatingSystem: linux
+      apis:
+        - name: PackageUpdates
+          custom_attributes:
+            packageManager: "apt"
+          commands:
+            - run: printf "%s;%s" "$(/usr/lib/update-notifier/apt-check 2>&1)" "$(lsb_release -a 2>/dev/null|grep Release|awk '{print $2}')"
+              split: horizontal
+              regex_match: true
+              split_by: ([0-9]+);([0-9]+);([0-9\.]+)
+              set_header: [normal_updates,security_updates, version]
