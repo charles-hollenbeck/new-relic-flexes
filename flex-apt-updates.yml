@@ -1,6 +1,6 @@
 integrations:
   - name: nri-flex
-    interval: 24hr
+    interval: 1h
     config:
       name: LinuxPackageUpdates
       custom_attributes:
