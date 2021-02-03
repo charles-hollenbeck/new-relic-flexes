@@ -10,8 +10,8 @@ integrations:
           custom_attributes:
             packageManager: "apt"
           commands:
-            - run: printf "%s;%s" "$(/usr/lib/update-notifier/apt-check 2>&1)" "$(lsb_release -a 2>/dev/null|grep Release|awk '{print $2}')"
+            - run: printf "%s;%s;%s" "$(/usr/lib/update-notifier/apt-check 2>&1)" "$([ -f /var/run/reboot-required ] && echo "1" || echo "0")" "$(lsb_release -a 2>/dev/null|grep Release|awk '{print $2}')"
               split: horizontal
               regex_match: true
-              split_by: ([0-9]+);([0-9]+);([0-9\.]+)
-              set_header: [normal_updates,security_updates, version]
+              split_by: ([0-9]+);([0-9]+);([0-9]+);([0-9\.]+)
+              set_header: [normal_updates,security_updates, reboot_required, version]
